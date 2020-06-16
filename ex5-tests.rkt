@@ -3,10 +3,10 @@
 (require "ex5.rkt")
 
 ;; Q1
-(check-equal? (take (sqrt-lzl 2 1) 3) '((1 . 1) (3/2 . 1/4)  (17/12 . 1/144)) "incorrect sqrt-lzl")
-(check-equal? (find-first (integers-from 1) (lambda (x) (> x 10))) 11 "incorrect find-first 1")
-(check-equal? (find-first (cons-lzl 1 (lambda() (cons-lzl 2 (lambda () '())))) (lambda (x) (> x 10))) 'fail "incorrect find-first 2")
-(check-equal? (sqrt2 2 1 0.0001) (+ 1 (/ 169 408)) "incorrect sqrt2")
+;(check-equal? (take (sqrt-lzl 2 1) 3) '((1 . 1) (3/2 . 1/4)  (17/12 . 1/144)) "incorrect sqrt-lzl")
+;(check-equal? (find-first (integers-from 1) (lambda (x) (> x 10))) 11 "incorrect find-first 1")
+;(check-equal? (find-first (cons-lzl 1 (lambda() (cons-lzl 2 (lambda () '())))) (lambda (x) (> x 10))) 'fail "incorrect find-first 2")
+;(check-equal? (sqrt2 2 1 0.0001) (+ 1 (/ 169 408)) "incorrect sqrt2")
 
 ;; Q2
 (check-equal? (get-value '((a . 3) (b . 4)) 'b)  4 "incorrect get-value 1")

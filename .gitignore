@@ -3,6 +3,8 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+compiled/*
+*.bak
 *.code-workspace
 *.zip
 ~$*.docx
