@@ -118,13 +118,37 @@
 
 (define collect-all-values-1
  (lambda (lists key)
-  @TODO
+  (if (empty? lists)
+      '()
+      (let ((value (get-value (car lists) key))
+            (collection (collect-all-values-1 (cdr lists) key)))
+        (if (eq? value 'fail)
+            collection
+            (cons value collection))))
  )
 )
 
 (define collect-all-values-2
  (lambda (lists key)
-  @TODO
+  (letrec ((collect-all-values$
+             (lambda (lists key cont)
+               (if (empty? lists)
+                   (cont '())
+                   (collect-all-values$
+                    (cdr lists)
+                    key
+                    (lambda (collection)
+                      (get-value$
+                       (car lists)
+                       key
+                       (lambda (value)
+                         (cont (cons value collection)))
+                       (lambda () (cont collection)))))
+                   ))))
+           (collect-all-values$
+            lists
+            key
+            (lambda (x) x)))
  )
 )
    
