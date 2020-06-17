@@ -45,40 +45,53 @@
 
 ;;; Q1
 
+(define guess-accuracy
+  (lambda (guess x)
+    (abs (- (square guess) x))))
 
-;;;Signature: sqrt-lzl(x, init)
-;;;Purpose: Generate a lazy list of approximations (pairs of <guess, accuracy>) of the square root of the given number x, according to Newton method, starting from init guess.
-;;;Type: [Number * Number -> LzlList<Pair<Number,Number>>
-;;;Pre-condition: init =/= 0
-;;;Tests: (take (sqrt-lzl 2 1) 3) →  '((1 . 1) (3/2 . 1/4) (17/12 . 1/144)) 
-;(define sqrt-lzl 
-;  (lambda (x init)
-;   @TODO
-;  )
-;)  
-;
-;;;Signature: find-first(lzlst, p)
-;;;Purpose: Return the first item in the given lazy list which satisfies the given predicate. If no such item exists return 'fail.
-;;;Type: [[LzlList<T> * T->Boolean] -> T | {'fail} ]
-;;;Pre-condition: /
-;;;Tests: (find-first (integers-from 1) (lambda (x) (> x 10))) --> 11; (find-first (cons-lzl 1 (lambda() (cons-lzl 2 (lambda () '())))) (lambda (x) (> x 10))) --> 'fail
-;
-;(define find-first
-;  (lambda (lz-lst p)
-;   @TODO
-;  )
-;)
-;
-;;;Signature: sqrt2(x,init,epsilon)
-;;;Purpose: return approximation of the square root of the given number x, according to Newton method, starting from init guess with epsilon threshold.  The procedure uses sqrt-lzl and find-first procedures.
-;;;Type: [Number * Number * Number -> Number]
-;;;Pre-condition: init =/= 0
-;;;Tests: (sqrt2 2 1 0.0001) → 1 169/408
-;(define sqrt2
-;  (lambda (x init epsilon)
-;   @TODO
-;  )
-;)
+;;Signature: sqrt-lzl(x, init)
+;;Purpose: Generate a lazy list of approximations (pairs of <guess, accuracy>) of the square root of the given number x, according to Newton method, starting from init guess.
+;;Type: [Number * Number -> LzlList<Pair<Number,Number>>
+;;Pre-condition: init =/= 0
+;;Tests: (take (sqrt-lzl 2 1) 3) →  '((1 . 1) (3/2 . 1/4) (17/12 . 1/144)) 
+(define sqrt-lzl 
+  (lambda (x init)
+   (cons-lzl
+    (cons init (guess-accuracy init x))
+    (lambda ()
+      (sqrt-lzl x (improve init x))))
+  )
+)
+
+;;Signature: find-first(lzlst, p)
+;;Purpose: Return the first item in the given lazy list which satisfies the given predicate. If no such item exists return 'fail.
+;;Type: [[LzlList<T> * T->Boolean] -> T | {'fail} ]
+;;Pre-condition: /
+;;Tests: (find-first (integers-from 1) (lambda (x) (> x 10))) --> 11; (find-first (cons-lzl 1 (lambda() (cons-lzl 2 (lambda () '())))) (lambda (x) (> x 10))) --> 'fail
+
+(define find-first
+  (lambda (lz-lst p)
+    (if (empty-lzl? lz-lst)
+        'fail
+        (let ((value (head lz-lst)))
+          (if (p value)
+              value
+              (find-first (tail lz-lst) p))))
+  )
+)
+
+;;Signature: sqrt2(x,init,epsilon)
+;;Purpose: return approximation of the square root of the given number x, according to Newton method, starting from init guess with epsilon threshold.  The procedure uses sqrt-lzl and find-first procedures.
+;;Type: [Number * Number * Number -> Number]
+;;Pre-condition: init =/= 0
+;;Tests: (sqrt2 2 1 0.0001) → 1 169/408
+(define sqrt2
+  (lambda (x init epsilon)
+   (car (find-first (sqrt-lzl x init)
+               (lambda (approximation)
+                 (good-enough? (car approximation) x epsilon))))
+  )
+)
 
 
 ;;;; Q2
