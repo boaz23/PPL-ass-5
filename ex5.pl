@@ -41,9 +41,9 @@ parents(shai,dor,meni).
 % Signature: participate(Child_name,Activity)/2
 % Purpose: registration details
 %
-participate(dany,swimming).
-participate(dany,ballet).
-participate(dana,soccer).
+participate(dany,soccer).
+participate(dany,judu).
+participate(dana,ballet).
 participate(dana,judu).
 participate(guy,judu).
 participate(shai,soccer).
@@ -76,13 +76,18 @@ pick_me_up(Child_name,Phone) :- parents(Child_name, _, Parent),
                                 parent_details(Parent, Phone, true).
 
 % Signature: active_child(Name)/1
-% Purpose:
-%
+% Purpose: The names of all childs who participate in at least 2 activities
+active_child(Name) :- participate(Name,A1),
+                      participate(Name,A2),
+                      A1 \= A2.
 
 % Signature: activity_participants_list(Name, List)/2
-% Purpose:
-%
+% Purpose: The relation between an activity and the list of all the children names that participate in the activity
+activity_participants_list(Name, List) :- findall(Child, participate(Child, Name), List).
 
 % Signature: can_register(Child_name,Activity)/2
-% Purpose:
-%
+% Purpose: The relation between a child and all activities that the child can register to
+can_register(Child_name,Activity) :-
+    findall(D, (participate(Child_name, A), activity(A, D)), DaysList),
+    activity(Activity, Day),
+    not_member(Day, DaysList).
