@@ -19,7 +19,7 @@ maximum_printing_depth(100).
    (select(max_depth(_), A, B), ! ; A = B),
    maximum_printing_depth(MPD),
    set_prolog_flag(toplevel_print_options, [max_depth(MPD)|B]).
-   
+
 % Signature: activity(Name,Day)/2
 % Purpose: describe an activity at the country club and the day it takes place
 %
@@ -69,8 +69,11 @@ not_member(X, [Y|Ys]) :- X \= Y,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% To Do
 
 % Signature: pick_me_up(Child_name,Phone)/2
-% Purpose:
-
+% Purpose: The view (relation) of a child and it's parent's phones who has a car
+pick_me_up(Child_name,Phone) :- parents(Child_name, Parent, _),
+                                parent_details(Parent, Phone, true).
+pick_me_up(Child_name,Phone) :- parents(Child_name, _, Parent),
+                                parent_details(Parent, Phone, true).
 
 % Signature: active_child(Name)/1
 % Purpose:
@@ -83,4 +86,3 @@ not_member(X, [Y|Ys]) :- X \= Y,
 % Signature: can_register(Child_name,Activity)/2
 % Purpose:
 %
-
