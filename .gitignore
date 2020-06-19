@@ -7,6 +7,6 @@ compiled/*
 *.bak
 *.code-workspace
 *.zip
-~$*.docx
+*.docx
 *.tmp
 *.pdf
